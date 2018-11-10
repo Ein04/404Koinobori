@@ -22,11 +22,12 @@ var scene,
 	container;
 
 var pole, poleframe,
-	link1, link2, link2,
+	link1, link2, link3,
 	linkframe1, linkframe2, linkframe3;
 
 var speed;
 var disturbance;
+var xPos,yPos,zPos;
 
 
 function init() {
@@ -44,7 +45,12 @@ function init() {
     farPlane);
   camera.position.z = 800;  
   camera.position.y = 0;
-  camera.lookAt(new THREE.Vector3(0,0,0));    
+  camera.lookAt(new THREE.Vector3(0,0,0)); 
+
+  controls = new THREE.OrbitControls(camera);
+  controls.damping = 0.2;
+  controls.autoRotate = false;
+
   renderer = new THREE.WebGLRenderer({alpha: true, antialias: true });
   renderer.setPixelRatio( window.devicePixelRatio );
   renderer.setSize(WIDTH, HEIGHT);
@@ -99,7 +105,7 @@ function initPole(){
 	var poleGeo = new THREE.CylinderGeometry(5,5,300,5);
 	var poleMat = new THREE.MeshLambertMaterial({
 	    color: 0xe55d2b, 
-    	shading:THREE.FlatShading
+    	flatShading: true
 });
 	var mesh = new THREE.Mesh( poleGeo, poleMat );
 	mesh.position.x = 0;
@@ -110,11 +116,85 @@ function initPole(){
 	scene.add( mesh );
 }
 
+function initFlags(){
+	flagMaterialRed = new THREE.MeshLambertMaterial( {color: 0xc83d32} );
+	flagMaterialGreen = new THREE.MeshLambertMaterial( {color: 0x99af5d} );
+	flagMaterialYellow = new THREE.MeshLambertMaterial( {color: 0xe6b740} );
+    boxGeometry = new THREE.BoxGeometry( 30, 30, 60 );    // width, height, depth
+
+    link1 = new THREE.Mesh( boxGeometry, flagMaterialRed );  
+    scene.add(link1);
+    linkFrame1   = new THREE.AxesHelper(1) ;   
+    scene.add(linkFrame1);
+    link2 = new THREE.Mesh( boxGeometry, flagMaterialGreen );  
+    scene.add(link2);
+    linkFrame2   = new THREE.AxesHelper(1) ;   
+    scene.add(linkFrame2);
+    link3 = new THREE.Mesh( boxGeometry, flagMaterialYellow );  
+    scene.add(link3);
+    linkFrame3   = new THREE.AxesHelper(1) ;   
+    scene.add(linkFrame3);
+
+    link1.matrixAutoUpdate = false;  
+    link2.matrixAutoUpdate = false;  
+    link3.matrixAutoUpdate = false;  
+
+    linkFrame1.matrixAutoUpdate = false;  
+    linkFrame2.matrixAutoUpdate = false;  
+    linkFrame3.matrixAutoUpdate = false;  
+}
+
+function flagSetMartices(){
+	var deg2rad = Math.PI/180;
+	var xPos = 0;
+	var yPos = 110;
+	var zPos = -30;
+
+	//todo: degree calculated from mousePos
+
+	      ////////////// link1
+    linkFrame1.matrix.identity(); 
+    linkFrame1.matrix.multiply(new THREE.Matrix4().makeTranslation(xPos,yPos,zPos));   
+    // linkFrame1.matrix.multiply(new THREE.Matrix4().makeRotationZ()); 
+      // Frame 1 has been established
+    link1.matrix.copy(linkFrame1.matrix);
+    link1.matrix.multiply(new THREE.Matrix4().makeTranslation(0,0,-95)); 
+    link1.matrix.multiply(new THREE.Matrix4().makeScale(2,2,2.6));    
+
+      ////////////// link2
+    linkFrame2.matrix.copy(linkFrame1.matrix);      // start with parent frame
+    linkFrame2.matrix.multiply(new THREE.Matrix4().makeTranslation(50,50,-30));
+    // linkFrame2.matrix.multiply(new THREE.Matrix4().makeRotationZ(theta2));    
+      // Frame 2 has been established
+    link2.matrix.copy(linkFrame2.matrix);
+    link2.matrix.multiply(new THREE.Matrix4().makeTranslation(2,0,0));   
+    link2.matrix.multiply(new THREE.Matrix4().makeScale(4,1,1));    
+
+      ///////////////  link3
+    linkFrame3.matrix.copy(linkFrame2.matrix);
+    linkFrame3.matrix.multiply(new THREE.Matrix4().makeTranslation(50,0,0));
+    // linkFrame3.matrix.multiply(new THREE.Matrix4().makeRotationZ(theta3));    
+      // Frame 3 has been established
+    link3.matrix.copy(linkFrame3.matrix);
+    link3.matrix.multiply(new THREE.Matrix4().makeTranslation(2,0,0));   
+    link3.matrix.multiply(new THREE.Matrix4().makeScale(4,1,1));   
+
+    link1.updateMatrixWorld();
+    link2.updateMatrixWorld();
+    link3.updateMatrixWorld();
+
+    linkFrame1.updateMatrixWorld();
+    linkFrame2.updateMatrixWorld();
+    linkFrame3.updateMatrixWorld();
+}
+
+
+
 function update(){
   render();
   var xTarget = (mousePos.x-windowHalfX);
   var yTarget= (mousePos.y-windowHalfY);
-//todo
+  flagSetMartices(xTarget,yTarget);
   requestAnimationFrame(update);
 }
 
@@ -126,4 +206,5 @@ init();
 initLights();
 initFloor();
 initPole();
+initFlags();
 update();
