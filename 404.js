@@ -120,7 +120,7 @@ function initFlags(){
 	flagMaterialRed = new THREE.MeshLambertMaterial( {color: 0xc83d32} );
 	flagMaterialGreen = new THREE.MeshLambertMaterial( {color: 0x99af5d} );
 	flagMaterialYellow = new THREE.MeshLambertMaterial( {color: 0xe6b740} );
-    boxGeometry = new THREE.BoxGeometry( 30, 30, 60 );    // width, height, depth
+    boxGeometry = new THREE.BoxGeometry( 30, 30, 40 );    // width, height, depth
 
     link1 = new THREE.Mesh( boxGeometry, flagMaterialRed );  
     scene.add(link1);
@@ -148,36 +148,38 @@ function flagSetMartices(){
 	var deg2rad = Math.PI/180;
 	var xPos = 0;
 	var yPos = 110;
-	var zPos = -30;
+	var zPos = -50;
 
 	//todo: degree calculated from mousePos
 
 	      ////////////// link1
     linkFrame1.matrix.identity(); 
-    linkFrame1.matrix.multiply(new THREE.Matrix4().makeTranslation(xPos,yPos,zPos));   
-    // linkFrame1.matrix.multiply(new THREE.Matrix4().makeRotationZ()); 
+    linkFrame1.matrix.multiply(new THREE.Matrix4().makeTranslation(xPos,yPos,zPos)); 
+    linkFrame1.matrix.multiply(new THREE.Matrix4().makeScale(2,2,-2));  
       // Frame 1 has been established
     link1.matrix.copy(linkFrame1.matrix);
-    link1.matrix.multiply(new THREE.Matrix4().makeTranslation(0,0,-95)); 
-    link1.matrix.multiply(new THREE.Matrix4().makeScale(2,2,2.6));    
+    link1.matrix.multiply(new THREE.Matrix4().makeTranslation(0,0,0)); 
+    link1.matrix.multiply(new THREE.Matrix4().makeScale(1,1,1));    
 
       ////////////// link2
     linkFrame2.matrix.copy(linkFrame1.matrix);      // start with parent frame
-    linkFrame2.matrix.multiply(new THREE.Matrix4().makeTranslation(50,50,-30));
+    linkFrame2.matrix.multiply(new THREE.Matrix4().makeTranslation(0,0,50));
+    linkFrame2.matrix.multiply(new THREE.Matrix4().makeScale(0.75,0.75,0.75)); 
     // linkFrame2.matrix.multiply(new THREE.Matrix4().makeRotationZ(theta2));    
       // Frame 2 has been established
     link2.matrix.copy(linkFrame2.matrix);
-    link2.matrix.multiply(new THREE.Matrix4().makeTranslation(2,0,0));   
-    link2.matrix.multiply(new THREE.Matrix4().makeScale(4,1,1));    
+    link2.matrix.multiply(new THREE.Matrix4().makeTranslation(0,0,0));   
+    link2.matrix.multiply(new THREE.Matrix4().makeScale(1,1,1));    
 
       ///////////////  link3
     linkFrame3.matrix.copy(linkFrame2.matrix);
-    linkFrame3.matrix.multiply(new THREE.Matrix4().makeTranslation(50,0,0));
+    linkFrame3.matrix.multiply(new THREE.Matrix4().makeTranslation(0,0,50));
+    linkFrame3.matrix.multiply(new THREE.Matrix4().makeScale(0.75,0.75,0.75)); 
     // linkFrame3.matrix.multiply(new THREE.Matrix4().makeRotationZ(theta3));    
       // Frame 3 has been established
     link3.matrix.copy(linkFrame3.matrix);
-    link3.matrix.multiply(new THREE.Matrix4().makeTranslation(2,0,0));   
-    link3.matrix.multiply(new THREE.Matrix4().makeScale(4,1,1));   
+    link3.matrix.multiply(new THREE.Matrix4().makeTranslation(0,0,0));   
+    link3.matrix.multiply(new THREE.Matrix4().makeScale(1,1,1));   
 
     link1.updateMatrixWorld();
     link2.updateMatrixWorld();
