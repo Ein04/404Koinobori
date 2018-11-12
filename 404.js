@@ -25,9 +25,11 @@ var pole, poleframe,
 	link1, link2, link3,
 	linkframe1, linkframe2, linkframe3;
 
-var speed;
-var disturbance;
+var speed=0;
+var MAX_SPEED = 10;
+var disturbanceX,disturbanceY;
 var xPos,yPos,zPos;
+
 
 
 function init() {
@@ -144,18 +146,34 @@ function initFlags(){
     linkFrame3.matrixAutoUpdate = false;  
 }
 
-function flagSetMartices(){
+function flagSetMartices(xTarget,yTarget){
 	var deg2rad = Math.PI/180;
 	var xPos = 0;
 	var yPos = 110;
 	var zPos = -50;
+	// if (disturbanceX < xTarget && disturbanceY < yTarget) {
+	// 		disturbanceX+=speed;
+	// 		disturbanceY+=speed;
+	// } else {
+	// 	disturbanceX = 0;
+	// 	disturbanceY = 0;
+	// }
+	speed = (speed+Math.floor((Math.random() * 10) + 1)) % MAX_SPEED;
+	var rotationM = new THREE.Matrix4();
+	rotationM.identity();
+	rotationM.lookAt(
+		new THREE.Vector3(xPos,yPos,zPos),
+		new THREE.Vector3(xTarget-speed/3,-(yTarget-speed/3),-100),
+		new THREE.Vector3(0,1,0));
+
 
 	//todo: degree calculated from mousePos
 
 	      ////////////// link1
     linkFrame1.matrix.identity(); 
     linkFrame1.matrix.multiply(new THREE.Matrix4().makeTranslation(xPos,yPos,zPos)); 
-    linkFrame1.matrix.multiply(new THREE.Matrix4().makeScale(2,2,-2));  
+    linkFrame1.matrix.multiply(new THREE.Matrix4().makeScale(2,2,-2)); 
+    linkFrame1.matrix.multiply(rotationM); 
       // Frame 1 has been established
     link1.matrix.copy(linkFrame1.matrix);
     link1.matrix.multiply(new THREE.Matrix4().makeTranslation(0,0,0)); 
@@ -163,7 +181,7 @@ function flagSetMartices(){
 
       ////////////// link2
     linkFrame2.matrix.copy(linkFrame1.matrix);      // start with parent frame
-    linkFrame2.matrix.multiply(new THREE.Matrix4().makeTranslation(0,0,50));
+    linkFrame2.matrix.multiply(new THREE.Matrix4().makeTranslation(0,0,35));
     linkFrame2.matrix.multiply(new THREE.Matrix4().makeScale(0.75,0.75,0.75)); 
     // linkFrame2.matrix.multiply(new THREE.Matrix4().makeRotationZ(theta2));    
       // Frame 2 has been established
@@ -173,7 +191,7 @@ function flagSetMartices(){
 
       ///////////////  link3
     linkFrame3.matrix.copy(linkFrame2.matrix);
-    linkFrame3.matrix.multiply(new THREE.Matrix4().makeTranslation(0,0,50));
+    linkFrame3.matrix.multiply(new THREE.Matrix4().makeTranslation(0,0,35));
     linkFrame3.matrix.multiply(new THREE.Matrix4().makeScale(0.75,0.75,0.75)); 
     // linkFrame3.matrix.multiply(new THREE.Matrix4().makeRotationZ(theta3));    
       // Frame 3 has been established
@@ -202,6 +220,10 @@ function update(){
 
 function render(){
   renderer.render(scene, camera);
+}
+
+function RotateYaxis(){
+
 }
 
 init();
