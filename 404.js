@@ -30,6 +30,9 @@ var MAX_SPEED = 10;
 var disturbanceX,disturbanceY;
 var xPos,yPos,zPos;
 
+var rotationM = new THREE.Matrix4();
+var rotationM2 = new THREE.Matrix4();
+var rotationM3 = new THREE.Matrix4();
 
 
 function init() {
@@ -159,7 +162,8 @@ function flagSetMartices(xTarget,yTarget){
 	// 	disturbanceY = 0;
 	// }
 	speed = (speed+Math.floor((Math.random() * 10) + 1)) % MAX_SPEED;
-	var rotationM = new THREE.Matrix4();
+	rotationM3 = rotationM2;
+	rotationM2 = rotationM;
 	rotationM.identity();
 	rotationM.lookAt(
 		new THREE.Vector3(xPos,yPos,zPos),
@@ -181,6 +185,7 @@ function flagSetMartices(xTarget,yTarget){
 
       ////////////// link2
     linkFrame2.matrix.copy(linkFrame1.matrix);      // start with parent frame
+    linkFrame2.matrix.multiply(rotationM2); 
     linkFrame2.matrix.multiply(new THREE.Matrix4().makeTranslation(0,0,35));
     linkFrame2.matrix.multiply(new THREE.Matrix4().makeScale(0.75,0.75,0.75)); 
     // linkFrame2.matrix.multiply(new THREE.Matrix4().makeRotationZ(theta2));    
@@ -192,7 +197,8 @@ function flagSetMartices(xTarget,yTarget){
       ///////////////  link3
     linkFrame3.matrix.copy(linkFrame2.matrix);
     linkFrame3.matrix.multiply(new THREE.Matrix4().makeTranslation(0,0,35));
-    linkFrame3.matrix.multiply(new THREE.Matrix4().makeScale(0.75,0.75,0.75)); 
+    linkFrame3.matrix.multiply(new THREE.Matrix4().makeScale(0.75,0.75,0.75));
+         linkFrame3.matrix.multiply(rotationM3); 
     // linkFrame3.matrix.multiply(new THREE.Matrix4().makeRotationZ(theta3));    
       // Frame 3 has been established
     link3.matrix.copy(linkFrame3.matrix);
@@ -215,6 +221,13 @@ function update(){
   var xTarget = (mousePos.x-windowHalfX);
   var yTarget= (mousePos.y-windowHalfY);
   flagSetMartices(xTarget,yTarget);
+
+  var fps = 1;
+	function animate() {
+  		setTimeout(function() {
+    		requestAnimationFrame(animate);
+  			}, 1000 / fps);
+}
   requestAnimationFrame(update);
 }
 
