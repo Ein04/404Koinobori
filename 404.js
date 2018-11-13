@@ -185,7 +185,7 @@ function flagSetMartices(xTarget,yTarget){
 
       ////////////// link2
     linkFrame2.matrix.copy(linkFrame1.matrix);      // start with parent frame
-    linkFrame2.matrix.multiply(rotationM2); 
+    // linkFrame2.matrix.multiply(rotationM2); 
     linkFrame2.matrix.multiply(new THREE.Matrix4().makeTranslation(0,0,35));
     linkFrame2.matrix.multiply(new THREE.Matrix4().makeScale(0.75,0.75,0.75)); 
     // linkFrame2.matrix.multiply(new THREE.Matrix4().makeRotationZ(theta2));    
@@ -198,7 +198,7 @@ function flagSetMartices(xTarget,yTarget){
     linkFrame3.matrix.copy(linkFrame2.matrix);
     linkFrame3.matrix.multiply(new THREE.Matrix4().makeTranslation(0,0,35));
     linkFrame3.matrix.multiply(new THREE.Matrix4().makeScale(0.75,0.75,0.75));
-         linkFrame3.matrix.multiply(rotationM3); 
+         // linkFrame3.matrix.multiply(rotationM3); 
     // linkFrame3.matrix.multiply(new THREE.Matrix4().makeRotationZ(theta3));    
       // Frame 3 has been established
     link3.matrix.copy(linkFrame3.matrix);
