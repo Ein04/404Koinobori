@@ -25,8 +25,9 @@ var pole, poleframe,
 	link1, link2, link3,
 	linkframe1, linkframe2, linkframe3;
 
+var fps = 80;
 var speed=0;
-var MAX_SPEED = 10;
+var MAX_SPEED = 30;
 var disturbanceX,disturbanceY;
 var xPos,yPos,zPos;
 
@@ -162,14 +163,13 @@ function flagSetMartices(xTarget,yTarget){
 	// 	disturbanceY = 0;
 	// }
 	speed = (speed+Math.floor((Math.random() * 10) + 1)) % MAX_SPEED;
-	rotationM3 = rotationM2;
-	rotationM2 = rotationM;
+	// rotationM3 = rotationM2;
+	// rotationM2 = rotationM;
 	rotationM.identity();
 	rotationM.lookAt(
 		new THREE.Vector3(xPos,yPos,zPos),
-		new THREE.Vector3(xTarget-speed/3,-(yTarget-speed/3),-100),
+		new THREE.Vector3(xTarget-speed,-(yTarget-speed),-100),
 		new THREE.Vector3(0,1,0));
-
 
 	//todo: degree calculated from mousePos
 
@@ -221,23 +221,15 @@ function update(){
   var xTarget = (mousePos.x-windowHalfX);
   var yTarget= (mousePos.y-windowHalfY);
   flagSetMartices(xTarget,yTarget);
-
-  var fps = 1;
-	function animate() {
   		setTimeout(function() {
-    		requestAnimationFrame(animate);
+    		requestAnimationFrame(update);
   			}, 1000 / fps);
-}
-  requestAnimationFrame(update);
 }
 
 function render(){
   renderer.render(scene, camera);
 }
 
-function RotateYaxis(){
-
-}
 
 init();
 initLights();
