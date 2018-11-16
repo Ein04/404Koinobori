@@ -221,9 +221,9 @@ function update(){
   var xTarget = (mousePos.x-windowHalfX);
   var yTarget= (mousePos.y-windowHalfY);
   flagSetMartices(xTarget,yTarget);
-  		setTimeout(function() {
-    		requestAnimationFrame(update);
-  			}, 1000 / fps);
+  setTimeout(function() {
+  	requestAnimationFrame(update);
+  }, 1000 / fps);
 }
 
 function render(){
