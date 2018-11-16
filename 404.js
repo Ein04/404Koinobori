@@ -2,24 +2,24 @@ console.log('hello stranger');
 
 // SETUP RENDERER & SCENE
 var HEIGHT,
-  	WIDTH,
+    WIDTH,
     windowHalfX,
-  	windowHalfY,
+    windowHalfY,
     mousePos = {x:0,y:0};
     dist = 0;
 
-var scene, 
+var scene,
     camera,
     controls,
     fieldOfView,
-  	aspectRatio,
-  	nearPlane,
-  	farPlane,
-    shadowLight, 
+    aspectRatio,
+    nearPlane,
+    farPlane,
+    shadowLight,
     backLight,
-    light, 
+    light,
     renderer,
-	container;
+    container;
 
 var pole, poleframe,
 	link1, link2, link3,
@@ -43,15 +43,15 @@ function init() {
   aspectRatio = WIDTH / HEIGHT;
   fieldOfView = 60;
   nearPlane = 1;
-  farPlane = 2000; 
+  farPlane = 2000;
   camera = new THREE.PerspectiveCamera(
     fieldOfView,
     aspectRatio,
     nearPlane,
     farPlane);
-  camera.position.z = 800;  
+  camera.position.z = 800;
   camera.position.y = 0;
-  camera.lookAt(new THREE.Vector3(0,0,0)); 
+  camera.lookAt(new THREE.Vector3(0,0,0));
 
   controls = new THREE.OrbitControls(camera);
   controls.damping = 0.2;
@@ -85,21 +85,21 @@ function handleMouseMove(event) {
 
 function initLights() {
   light = new THREE.HemisphereLight(0xffffff, 0xffffff, .5)
-  
+
   shadowLight = new THREE.DirectionalLight(0xffffff, .8);
   shadowLight.position.set(200, 200, 200);
   shadowLight.castShadow = true;
- 	
+
   backLight = new THREE.DirectionalLight(0xffffff, .4);
   backLight.position.set(-100, 200, 50);
   backLight.castShadow = true;
- 	
+
   scene.add(backLight);
   scene.add(light);
   scene.add(shadowLight);
 }
 
-function initFloor(){ 
+function initFloor(){
   floor = new THREE.Mesh(new THREE.PlaneBufferGeometry(1000,500), new THREE.MeshBasicMaterial({color:0x2b595a}));
   floor.rotation.x = -Math.PI/2;
   floor.position.y = -100;
@@ -108,11 +108,11 @@ function initFloor(){
 }
 
 function initPole(){
-	var poleGeo = new THREE.CylinderGeometry(5,5,300,5);
-	var poleMat = new THREE.MeshLambertMaterial({
-	    color: 0xe55d2b, 
-    	flatShading: true
-});
+  var poleGeo = new THREE.CylinderGeometry(5,5,300,5);
+  var poleMat = new THREE.MeshLambertMaterial({
+    color: 0xe55d2b,
+  	flatShading: true
+  });
 	var mesh = new THREE.Mesh( poleGeo, poleMat );
 	mesh.position.x = 0;
 	mesh.position.y = 0;
@@ -126,28 +126,28 @@ function initFlags(){
 	flagMaterialRed = new THREE.MeshLambertMaterial( {color: 0xc83d32} );
 	flagMaterialGreen = new THREE.MeshLambertMaterial( {color: 0x99af5d} );
 	flagMaterialYellow = new THREE.MeshLambertMaterial( {color: 0xe6b740} );
-    boxGeometry = new THREE.BoxGeometry( 30, 30, 40 );    // width, height, depth
+  boxGeometry = new THREE.BoxGeometry( 30, 30, 40 );   // width, height, depth
 
-    link1 = new THREE.Mesh( boxGeometry, flagMaterialRed );  
-    scene.add(link1);
-    linkFrame1   = new THREE.AxesHelper(1) ;   
-    scene.add(linkFrame1);
-    link2 = new THREE.Mesh( boxGeometry, flagMaterialGreen );  
-    scene.add(link2);
-    linkFrame2   = new THREE.AxesHelper(1) ;   
-    scene.add(linkFrame2);
-    link3 = new THREE.Mesh( boxGeometry, flagMaterialYellow );  
-    scene.add(link3);
-    linkFrame3   = new THREE.AxesHelper(1) ;   
-    scene.add(linkFrame3);
+  link1 = new THREE.Mesh( boxGeometry, flagMaterialRed );
+  scene.add(link1);
+  linkFrame1   = new THREE.AxesHelper(1) ;
+  scene.add(linkFrame1);
+  link2 = new THREE.Mesh( boxGeometry, flagMaterialGreen );
+  scene.add(link2);
+  linkFrame2   = new THREE.AxesHelper(1) ;
+  scene.add(linkFrame2);
+  link3 = new THREE.Mesh( boxGeometry, flagMaterialYellow );
+  scene.add(link3);
+  linkFrame3   = new THREE.AxesHelper(1) ;
+  scene.add(linkFrame3);
 
-    link1.matrixAutoUpdate = false;  
-    link2.matrixAutoUpdate = false;  
-    link3.matrixAutoUpdate = false;  
+  link1.matrixAutoUpdate = false;
+  link2.matrixAutoUpdate = false;
+  link3.matrixAutoUpdate = false;
 
-    linkFrame1.matrixAutoUpdate = false;  
-    linkFrame2.matrixAutoUpdate = false;  
-    linkFrame3.matrixAutoUpdate = false;  
+  linkFrame1.matrixAutoUpdate = false;
+  linkFrame2.matrixAutoUpdate = false;
+  linkFrame3.matrixAutoUpdate = false;
 }
 
 function flagSetMartices(xTarget,yTarget){
@@ -173,45 +173,45 @@ function flagSetMartices(xTarget,yTarget){
 
 	//todo: degree calculated from mousePos
 
-	      ////////////// link1
-    linkFrame1.matrix.identity(); 
-    linkFrame1.matrix.multiply(new THREE.Matrix4().makeTranslation(xPos,yPos,zPos)); 
-    linkFrame1.matrix.multiply(new THREE.Matrix4().makeScale(2,2,-2)); 
-    linkFrame1.matrix.multiply(rotationM); 
-      // Frame 1 has been established
-    link1.matrix.copy(linkFrame1.matrix);
-    link1.matrix.multiply(new THREE.Matrix4().makeTranslation(0,0,0)); 
-    link1.matrix.multiply(new THREE.Matrix4().makeScale(1,1,1));    
+	////////////// link1
+  linkFrame1.matrix.identity();
+  linkFrame1.matrix.multiply(new THREE.Matrix4().makeTranslation(xPos,yPos,zPos));
+  linkFrame1.matrix.multiply(new THREE.Matrix4().makeScale(2,2,-2));
+  linkFrame1.matrix.multiply(rotationM);
+  // Frame 1 has been established
+  link1.matrix.copy(linkFrame1.matrix);
+  link1.matrix.multiply(new THREE.Matrix4().makeTranslation(0,0,0));
+  link1.matrix.multiply(new THREE.Matrix4().makeScale(1,1,1));
 
-      ////////////// link2
-    linkFrame2.matrix.copy(linkFrame1.matrix);      // start with parent frame
-    // linkFrame2.matrix.multiply(rotationM2); 
-    linkFrame2.matrix.multiply(new THREE.Matrix4().makeTranslation(0,0,35));
-    linkFrame2.matrix.multiply(new THREE.Matrix4().makeScale(0.75,0.75,0.75)); 
-    // linkFrame2.matrix.multiply(new THREE.Matrix4().makeRotationZ(theta2));    
-      // Frame 2 has been established
-    link2.matrix.copy(linkFrame2.matrix);
-    link2.matrix.multiply(new THREE.Matrix4().makeTranslation(0,0,0));   
-    link2.matrix.multiply(new THREE.Matrix4().makeScale(1,1,1));    
+  ////////////// link2
+  linkFrame2.matrix.copy(linkFrame1.matrix);      // start with parent frame
+  // linkFrame2.matrix.multiply(rotationM2);
+  linkFrame2.matrix.multiply(new THREE.Matrix4().makeTranslation(0,0,35));
+  linkFrame2.matrix.multiply(new THREE.Matrix4().makeScale(0.75,0.75,0.75));
+  // linkFrame2.matrix.multiply(new THREE.Matrix4().makeRotationZ(theta2));
+  // Frame 2 has been established
+  link2.matrix.copy(linkFrame2.matrix);
+  link2.matrix.multiply(new THREE.Matrix4().makeTranslation(0,0,0));
+  link2.matrix.multiply(new THREE.Matrix4().makeScale(1,1,1));
 
-      ///////////////  link3
-    linkFrame3.matrix.copy(linkFrame2.matrix);
-    linkFrame3.matrix.multiply(new THREE.Matrix4().makeTranslation(0,0,35));
-    linkFrame3.matrix.multiply(new THREE.Matrix4().makeScale(0.75,0.75,0.75));
-         // linkFrame3.matrix.multiply(rotationM3); 
-    // linkFrame3.matrix.multiply(new THREE.Matrix4().makeRotationZ(theta3));    
-      // Frame 3 has been established
-    link3.matrix.copy(linkFrame3.matrix);
-    link3.matrix.multiply(new THREE.Matrix4().makeTranslation(0,0,0));   
-    link3.matrix.multiply(new THREE.Matrix4().makeScale(1,1,1));   
+  ///////////////  link3
+  linkFrame3.matrix.copy(linkFrame2.matrix);
+  linkFrame3.matrix.multiply(new THREE.Matrix4().makeTranslation(0,0,35));
+  linkFrame3.matrix.multiply(new THREE.Matrix4().makeScale(0.75,0.75,0.75));
+  // linkFrame3.matrix.multiply(rotationM3);
+  // linkFrame3.matrix.multiply(new THREE.Matrix4().makeRotationZ(theta3));
+  // Frame 3 has been established
+  link3.matrix.copy(linkFrame3.matrix);
+  link3.matrix.multiply(new THREE.Matrix4().makeTranslation(0,0,0));
+  link3.matrix.multiply(new THREE.Matrix4().makeScale(1,1,1));
 
-    link1.updateMatrixWorld();
-    link2.updateMatrixWorld();
-    link3.updateMatrixWorld();
+  link1.updateMatrixWorld();
+  link2.updateMatrixWorld();
+  link3.updateMatrixWorld();
 
-    linkFrame1.updateMatrixWorld();
-    linkFrame2.updateMatrixWorld();
-    linkFrame3.updateMatrixWorld();
+  linkFrame1.updateMatrixWorld();
+  linkFrame2.updateMatrixWorld();
+  linkFrame3.updateMatrixWorld();
 }
 
 
